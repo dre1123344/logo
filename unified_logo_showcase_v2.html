@@ -1,0 +1,1254 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>StarNexus & Starweave & Starvia — 24 SVG Concepts</title>
+    <style>
+        :root {
+            --bg-dark: #06080d;
+            --bg-card: #0d121d;
+            --text-main: #f3f4f6;
+            --text-muted: #9ca3af;
+            --accent: #3b82f6;
+            --accent-glow: rgba(59, 130, 246, 0.25);
+            --border: rgba(255, 255, 255, 0.08);
+            --card-border: rgba(255, 255, 255, 0.12);
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            background-color: var(--bg-dark);
+            color: var(--text-main);
+            line-height: 1.6;
+            padding: 48px 24px;
+            background-image: 
+                radial-gradient(circle at 20% 0%, rgba(30, 58, 138, 0.18) 0%, transparent 50%),
+                radial-gradient(circle at 80% 0%, rgba(131, 24, 67, 0.15) 0%, transparent 50%);
+        }
+
+        .container {
+            max-width: 1440px;
+            margin: 0 auto;
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        h1 {
+            font-size: 2.6rem;
+            font-weight: 700;
+            letter-spacing: -0.02em;
+            margin-bottom: 12px;
+            background: linear-gradient(135deg, #ffffff 0%, #60a5fa 45%, #f43f5e 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .subtitle {
+            font-size: 1.05rem;
+            color: var(--text-muted);
+            max-width: 780px;
+            margin: 0 auto 28px;
+        }
+
+        .controls-bar {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            align-items: center;
+            gap: 16px;
+            background: rgba(15, 23, 42, 0.65);
+            border: 1px solid var(--border);
+            padding: 14px 20px;
+            border-radius: 16px;
+            margin-bottom: 40px;
+            backdrop-filter: blur(12px);
+        }
+
+        .filter-tabs {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+        }
+
+        .tab-btn {
+            background: rgba(255, 255, 255, 0.04);
+            color: var(--text-muted);
+            border: 1px solid var(--border);
+            padding: 8px 16px;
+            border-radius: 10px;
+            font-size: 0.9rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .tab-btn:hover {
+            color: #fff;
+            background: rgba(255, 255, 255, 0.08);
+        }
+
+        .tab-btn.active {
+            background: linear-gradient(135deg, #3b82f6 0%, #6366f1 100%);
+            color: #fff;
+            border-color: transparent;
+            box-shadow: 0 4px 14px rgba(59, 130, 246, 0.35);
+        }
+
+        .theme-toggle {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 0.85rem;
+            color: var(--text-muted);
+        }
+
+        .bg-pill {
+            padding: 6px 12px;
+            border-radius: 8px;
+            border: 1px solid var(--border);
+            background: rgba(255, 255, 255, 0.04);
+            color: var(--text-main);
+            cursor: pointer;
+            font-size: 0.82rem;
+            transition: all 0.2s;
+        }
+
+        .bg-pill.active {
+            border-color: #60a5fa;
+            background: rgba(59, 130, 246, 0.15);
+            color: #93c5fd;
+        }
+
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(380px, 1fr));
+            gap: 28px;
+            margin-bottom: 60px;
+        }
+
+        .card {
+            background-color: var(--bg-card);
+            border: 1px solid var(--card-border);
+            border-radius: 20px;
+            overflow: hidden;
+            transition: transform 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .card.hidden {
+            display: none;
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+            border-color: rgba(96, 165, 250, 0.55);
+            box-shadow: 0 18px 45px rgba(0, 0, 0, 0.5);
+        }
+
+        .logo-viewport {
+            height: 270px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: radial-gradient(circle at center, #0e1422 0%, #05070c 100%);
+            position: relative;
+            border-bottom: 1px solid var(--border);
+            padding: 28px;
+            transition: background 0.3s ease;
+        }
+
+        body.light-preview .logo-viewport {
+            background: radial-gradient(circle at center, #ffffff 0%, #eef2f6 100%);
+        }
+
+        body.pure-black-preview .logo-viewport {
+            background: #000000;
+        }
+
+        .logo-viewport svg {
+            width: 176px;
+            height: 176px;
+            transition: transform 0.45s cubic-bezier(0.34, 1.56, 0.64, 1);
+        }
+
+        .card:hover .logo-viewport svg {
+            transform: scale(1.08);
+        }
+
+        .card-content {
+            padding: 24px;
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+
+        .tag-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+
+        .concept-tag {
+            font-size: 0.72rem;
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+            padding: 4px 10px;
+            border-radius: 20px;
+            font-weight: 600;
+        }
+
+        .tag-starlink {
+            color: #60a5fa;
+            background: rgba(59, 130, 246, 0.12);
+            border: 1px solid rgba(59, 130, 246, 0.25);
+        }
+
+        .tag-starsora {
+            color: #fb7185;
+            background: rgba(244, 63, 94, 0.12);
+            border: 1px solid rgba(244, 63, 94, 0.25);
+        }
+
+        .tag-matrix {
+            color: #34d399;
+            background: rgba(16, 185, 129, 0.12);
+            border: 1px solid rgba(16, 185, 129, 0.25);
+        }
+
+        .concept-title {
+            font-size: 1.25rem;
+            font-weight: 600;
+            margin-bottom: 8px;
+            color: #fff;
+        }
+
+        .concept-desc {
+            font-size: 0.9rem;
+            color: var(--text-muted);
+            margin-bottom: 16px;
+            line-height: 1.55;
+        }
+
+        .features {
+            display: flex;
+            gap: 6px;
+            flex-wrap: wrap;
+            margin-bottom: 20px;
+        }
+
+        .feature-badge {
+            font-size: 0.75rem;
+            background: rgba(255, 255, 255, 0.03);
+            color: #d1d5db;
+            padding: 4px 9px;
+            border-radius: 6px;
+            border: 1px solid var(--border);
+        }
+
+        .btn-group {
+            display: flex;
+            gap: 10px;
+        }
+
+        .btn {
+            flex: 1;
+            padding: 10px 14px;
+            border-radius: 10px;
+            font-size: 0.85rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            border: 1px solid var(--border);
+            text-align: center;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);
+            color: #fff;
+            border-color: transparent;
+        }
+
+        .btn-primary:hover {
+            filter: brightness(1.1);
+            box-shadow: 0 4px 14px rgba(37, 99, 235, 0.45);
+        }
+
+        .btn-secondary {
+            background-color: rgba(255, 255, 255, 0.04);
+            color: var(--text-main);
+        }
+
+        .btn-secondary:hover {
+            background-color: rgba(255, 255, 255, 0.09);
+            border-color: rgba(255, 255, 255, 0.22);
+        }
+
+        #toast {
+            position: fixed;
+            bottom: 28px;
+            right: 28px;
+            background: #10b981;
+            color: #fff;
+            padding: 12px 20px;
+            border-radius: 10px;
+            font-size: 0.9rem;
+            font-weight: 500;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.4);
+            opacity: 0;
+            transform: translateY(15px);
+            pointer-events: none;
+            transition: all 0.25s ease;
+            z-index: 999;
+        }
+
+        #toast.show {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        footer {
+            text-align: center;
+            padding-top: 32px;
+            border-top: 1px solid var(--border);
+            color: var(--text-muted);
+            font-size: 0.88rem;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>StarNexus &amp; Starweave &amp; Starvia — Complete SVG Collection</h1>
+            <p class="subtitle">完整整合 24 款全矢量 SVG 品牌标识方案（涵盖突触路由、日式赛博美学及矩阵扩展变体），支持多背景实时预览与源码导出</p>
+        </header>
+
+        <div class="controls-bar">
+            <div class="filter-tabs">
+                <button class="tab-btn active" onclick="filterCards('all', this)">全部方案 (24)</button>
+                <button class="tab-btn" onclick="filterCards('starlink', this)">Starlink 突触与向量 (6)</button>
+                <button class="tab-btn" onclick="filterCards('starsora', this)">Starsora 日式赛博 (6)</button>
+                <button class="tab-btn" onclick="filterCards('matrix', this)">几何矩阵扩展变体 (12)</button>
+            </div>
+            <div class="theme-toggle">
+                <span>画布背景：</span>
+                <button class="bg-pill active" onclick="setPreviewBg('default', this)">深空渐变</button>
+                <button class="bg-pill" onclick="setPreviewBg('pure-black', this)">纯黑</button>
+                <button class="bg-pill" onclick="setPreviewBg('light', this)">浅色</button>
+            </div>
+        </div>
+
+        <div class="grid" id="logo-grid">
+            <!-- Starlink AI (6款) -->
+            <div class="card" data-category="starlink">
+                <div class="logo-viewport">
+                    <svg id="sl-1" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+                        <defs>
+                            <linearGradient id="g-sl-1" x1="0%" y1="0%" x2="100%" y2="100%">
+                                <stop offset="0%" stop-color="#38bdf8"/><stop offset="100%" stop-color="#6366f1"/>
+                            </linearGradient>
+                        </defs>
+                        <g>
+                            <path d="M 28 72 Q 50 72, 50 50 T 72 28" stroke="url(#g-sl-1)" stroke-width="3" fill="none" stroke-linecap="round"/>
+                            <path d="M 28 28 Q 50 28, 50 50 T 72 72" stroke="url(#g-sl-1)" stroke-width="2.5" fill="none" opacity="0.6" stroke-linecap="round"/>
+                            <circle cx="28" cy="72" r="5" fill="url(#g-sl-1)"/>
+                            <circle cx="50" cy="50" r="7" fill="url(#g-sl-1)"/>
+                            <circle cx="72" cy="28" r="5" fill="url(#g-sl-1)"/>
+                            <circle cx="28" cy="28" r="3.5" fill="url(#g-sl-1)" opacity="0.7"/>
+                            <circle cx="72" cy="72" r="3.5" fill="url(#g-sl-1)" opacity="0.7"/>
+                        </g>
+                    </svg>
+                </div>
+                <div class="card-content">
+                    <div>
+                        <div class="tag-row"><span class="concept-tag tag-starlink">Starlink · 01</span></div>
+                        <h2 class="concept-title">Synapse Core / 核心突触网络</h2>
+                        <p class="concept-desc">优化升级的经典突触网络，以优雅的正弦双向弧线交汇于中心枢纽，体现分布式 AI 路由聚合。</p>
+                        <div class="features">
+                            <span class="feature-badge">突触网络</span>
+                            <span class="feature-badge">智能路由</span>
+                            <span class="feature-badge">精准汇聚</span>
+                        </div>
+                    </div>
+                    <div class="btn-group">
+                        <button class="btn btn-primary" onclick="downloadSvg('sl-1', 'starlink-synapse-core.svg')">下载 SVG</button>
+                        <button class="btn btn-secondary" onclick="copySvg('sl-1')">复制代码</button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card" data-category="starlink">
+                <div class="logo-viewport">
+                    <svg id="sl-2" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+                        <defs>
+                            <linearGradient id="g-sl-2" x1="0%" y1="0%" x2="100%" y2="100%">
+                                <stop offset="0%" stop-color="#3b82f6"/><stop offset="100%" stop-color="#10b981"/>
+                            </linearGradient>
+                        </defs>
+                        <g fill="none" stroke="url(#g-sl-2)" stroke-linecap="round" stroke-linejoin="round" stroke-width="3.5">
+                            <path d="M 30 25 L 70 25 L 30 50 L 70 75 L 30 75" />
+                        </g>
+                    </svg>
+                </div>
+                <div class="card-content">
+                    <div>
+                        <div class="tag-row"><span class="concept-tag tag-starlink">Starlink · 02</span></div>
+                        <h2 class="concept-title">Data Stream / 极简数据流 (S)</h2>
+                        <p class="concept-desc">以极简流畅的折线抽象演化出品牌首字母“S”，象征多元 AI 请求的高效分发与路由传输。</p>
+                        <div class="features">
+                            <span class="feature-badge">首字母抽象</span>
+                            <span class="feature-badge">极简现代</span>
+                            <span class="feature-badge">高效路由</span>
+                        </div>
+                    </div>
+                    <div class="btn-group">
+                        <button class="btn btn-primary" onclick="downloadSvg('sl-2', 'starlink-data-stream.svg')">下载 SVG</button>
+                        <button class="btn btn-secondary" onclick="copySvg('sl-2')">复制代码</button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card" data-category="starlink">
+                <div class="logo-viewport">
+                    <svg id="sl-3" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+                        <defs>
+                            <linearGradient id="g-sl-3" x1="0%" y1="0%" x2="100%" y2="100%">
+                                <stop offset="0%" stop-color="#6366f1"/><stop offset="100%" stop-color="#ec4899"/>
+                            </linearGradient>
+                        </defs>
+                        <g>
+                            <rect x="22" y="32" width="36" height="36" rx="8" fill="none" stroke="url(#g-sl-3)" stroke-width="3" transform="rotate(-15 40 50)"/>
+                            <rect x="42" y="32" width="36" height="36" rx="8" fill="none" stroke="url(#g-sl-3)" stroke-width="3" opacity="0.7" transform="rotate(15 60 50)"/>
+                            <path d="M 45 45 L 55 55 M 55 45 L 45 55" stroke="url(#g-sl-3)" stroke-width="3" stroke-linecap="round"/>
+                        </g>
+                    </svg>
+                </div>
+                <div class="card-content">
+                    <div>
+                        <div class="tag-row"><span class="concept-tag tag-starlink">Starlink · 03</span></div>
+                        <h2 class="concept-title">Model Fusion / 模型融合魔方</h2>
+                        <p class="concept-desc">两个带有圆角的精密几何模块交织重叠，直观传达“多模型无缝聚合、算力交融”的核心业务形态。</p>
+                        <div class="features">
+                            <span class="feature-badge">模块聚合</span>
+                            <span class="feature-badge">交织重叠</span>
+                            <span class="feature-badge">理性专业</span>
+                        </div>
+                    </div>
+                    <div class="btn-group">
+                        <button class="btn btn-primary" onclick="downloadSvg('sl-3', 'starlink-model-fusion.svg')">下载 SVG</button>
+                        <button class="btn btn-secondary" onclick="copySvg('sl-3')">复制代码</button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card" data-category="starlink">
+                <div class="logo-viewport">
+                    <svg id="sl-4" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+                        <defs>
+                            <linearGradient id="g-sl-4" x1="0%" y1="0%" x2="100%" y2="100%">
+                                <stop offset="0%" stop-color="#06b6d4"/><stop offset="100%" stop-color="#3b82f6"/>
+                            </linearGradient>
+                        </defs>
+                        <g fill="none" stroke="url(#g-sl-4)" stroke-linecap="round" stroke-width="4">
+                            <path d="M 25 35 L 50 60 L 75 35" />
+                            <path d="M 25 65 L 50 40 L 75 65" opacity="0.6"/>
+                        </g>
+                    </svg>
+                </div>
+                <div class="card-content">
+                    <div>
+                        <div class="tag-row"><span class="concept-tag tag-starlink">Starlink · 04</span></div>
+                        <h2 class="concept-title">Vector Bridge / 向量聚合桥</h2>
+                        <p class="concept-desc">双向对称的向量箭头在中心交汇融合，象征将用户的多样化需求一键桥接到最优 AI 模型。</p>
+                        <div class="features">
+                            <span class="feature-badge">向量交汇</span>
+                            <span class="feature-badge">双向桥梁</span>
+                            <span class="feature-badge">锐利简洁</span>
+                        </div>
+                    </div>
+                    <div class="btn-group">
+                        <button class="btn btn-primary" onclick="downloadSvg('sl-4', 'starlink-vector-bridge.svg')">下载 SVG</button>
+                        <button class="btn btn-secondary" onclick="copySvg('sl-4')">复制代码</button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card" data-category="starlink">
+                <div class="logo-viewport">
+                    <svg id="sl-5" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+                        <defs>
+                            <linearGradient id="g-sl-5" x1="0%" y1="0%" x2="100%" y2="100%">
+                                <stop offset="0%" stop-color="#8b5cf6"/><stop offset="100%" stop-color="#3b82f6"/>
+                            </linearGradient>
+                        </defs>
+                        <g fill="none" stroke="url(#g-sl-5)" stroke-linecap="round" stroke-linejoin="round" stroke-width="3.5">
+                            <path d="M 35 25 L 20 50 L 35 75" />
+                            <path d="M 65 25 L 80 50 L 65 75" />
+                            <line x1="42" y1="35" x2="58" y2="65" stroke-width="4"/>
+                        </g>
+                    </svg>
+                </div>
+                <div class="card-content">
+                    <div>
+                        <div class="tag-row"><span class="concept-tag tag-starlink">Starlink · 05</span></div>
+                        <h2 class="concept-title">Logic Code / 代码逻辑枢纽</h2>
+                        <p class="concept-desc">融合开发者代码符号（尖括号 &lt; &gt;）与斜向连结线，专为面向开发者与技术极客的 AI 聚合平台打造。</p>
+                        <div class="features">
+                            <span class="feature-badge">开发者符号</span>
+                            <span class="feature-badge">逻辑枢纽</span>
+                            <span class="feature-badge">极客风格</span>
+                        </div>
+                    </div>
+                    <div class="btn-group">
+                        <button class="btn btn-primary" onclick="downloadSvg('sl-5', 'starlink-logic-code.svg')">下载 SVG</button>
+                        <button class="btn btn-secondary" onclick="copySvg('sl-5')">复制代码</button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card" data-category="starlink">
+                <div class="logo-viewport">
+                    <svg id="sl-6" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+                        <defs>
+                            <linearGradient id="g-sl-6" x1="0%" y1="0%" x2="100%" y2="100%">
+                                <stop offset="0%" stop-color="#14b8a6"/><stop offset="100%" stop-color="#6366f1"/>
+                            </linearGradient>
+                        </defs>
+                        <g fill="none" stroke="url(#g-sl-6)" stroke-linecap="round" stroke-width="3">
+                            <path d="M 20 35 C 50 20, 50 80, 80 65" />
+                            <path d="M 20 65 C 50 80, 50 20, 80 35" opacity="0.6"/>
+                            <rect x="44" y="44" width="12" height="12" rx="3" fill="url(#g-sl-6)" stroke="none"/>
+                        </g>
+                    </svg>
+                </div>
+                <div class="card-content">
+                    <div>
+                        <div class="tag-row"><span class="concept-tag tag-starlink">Starlink · 06</span></div>
+                        <h2 class="concept-title">Sync Flow / 异步并发流</h2>
+                        <p class="concept-desc">两条相交的动态平行流体轨道穿过中央算力节点，演绎高并发、异步 AI 任务调度的聚合美学。</p>
+                        <div class="features">
+                            <span class="feature-badge">并发轨道</span>
+                            <span class="feature-badge">异步调度</span>
+                            <span class="feature-badge">流畅动感</span>
+                        </div>
+                    </div>
+                    <div class="btn-group">
+                        <button class="btn btn-primary" onclick="downloadSvg('sl-6', 'starlink-sync-flow.svg')">下载 SVG</button>
+                        <button class="btn btn-secondary" onclick="copySvg('sl-6')">复制代码</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Starsora AI (6款) -->
+            <div class="card" data-category="starsora">
+                <div class="logo-viewport">
+                    <svg id="ss-1" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+                        <defs>
+                            <linearGradient id="g-ss-1" x1="0%" y1="0%" x2="100%" y2="100%">
+                                <stop offset="0%" stop-color="#f43f5e"/><stop offset="100%" stop-color="#38bdf8"/>
+                            </linearGradient>
+                        </defs>
+                        <g fill="none" stroke="url(#g-ss-1)" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M 20 28 L 80 28" stroke-width="4"/>
+                            <path d="M 26 20 L 74 20" stroke-width="2.5"/>
+                            <path d="M 35 28 L 35 78" stroke-width="3.5"/>
+                            <path d="M 65 28 L 65 78" stroke-width="3.5"/>
+                            <circle cx="50" cy="50" r="10" stroke-width="2.5"/>
+                            <circle cx="50" cy="50" r="3" fill="url(#g-ss-1)" stroke="none"/>
+                        </g>
+                    </svg>
+                </div>
+                <div class="card-content">
+                    <div>
+                        <div class="tag-row"><span class="concept-tag tag-starsora">Starsora · 01</span></div>
+                        <h2 class="concept-title">Cyber Torii / 赛博鸟居</h2>
+                        <p class="concept-desc">将日本标志性的“鸟居”建筑轮廓抽象为数智网关，象征通往多元 AI 模型世界的入口与聚合枢纽。</p>
+                        <div class="features">
+                            <span class="feature-badge">日本特色</span>
+                            <span class="feature-badge">智能网关</span>
+                            <span class="feature-badge">赛博美学</span>
+                        </div>
+                    </div>
+                    <div class="btn-group">
+                        <button class="btn btn-primary" onclick="downloadSvg('ss-1', 'starsora-cyber-torii.svg')">下载 SVG</button>
+                        <button class="btn btn-secondary" onclick="copySvg('ss-1')">复制代码</button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card" data-category="starsora">
+                <div class="logo-viewport">
+                    <svg id="ss-2" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+                        <defs>
+                            <linearGradient id="g-ss-2" x1="0%" y1="0%" x2="100%" y2="100%">
+                                <stop offset="0%" stop-color="#ec4899"/><stop offset="100%" stop-color="#8b5cf6"/>
+                            </linearGradient>
+                        </defs>
+                        <g fill="none" stroke="url(#g-ss-2)" stroke-linecap="round" stroke-linejoin="round">
+                            <polygon points="50,15 82,45 50,75 18,45" stroke-width="3"/>
+                            <polygon points="50,30 68,45 50,60 32,45" stroke-width="2" opacity="0.7"/>
+                            <line x1="50" y1="15" x2="50" y2="75" stroke-width="2" stroke-dasharray="3 3"/>
+                            <circle cx="50" cy="45" r="4" fill="url(#g-ss-2)" stroke="none"/>
+                        </g>
+                    </svg>
+                </div>
+                <div class="card-content">
+                    <div>
+                        <div class="tag-row"><span class="concept-tag tag-starsora">Starsora · 02</span></div>
+                        <h2 class="concept-title">Origami Matrix / 赛博折纸矩阵</h2>
+                        <p class="concept-desc">汲取日本传统“折纸 (Origami)”艺术的几何折叠精髓，通过多维嵌套演化出精密稳定的算力矩阵。</p>
+                        <div class="features">
+                            <span class="feature-badge">折纸几何</span>
+                            <span class="feature-badge">算力矩阵</span>
+                            <span class="feature-badge">精密对称</span>
+                        </div>
+                    </div>
+                    <div class="btn-group">
+                        <button class="btn btn-primary" onclick="downloadSvg('ss-2', 'starsora-origami-matrix.svg')">下载 SVG</button>
+                        <button class="btn btn-secondary" onclick="copySvg('ss-2')">复制代码</button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card" data-category="starsora">
+                <div class="logo-viewport">
+                    <svg id="ss-3" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+                        <defs>
+                            <linearGradient id="g-ss-3" x1="0%" y1="0%" x2="100%" y2="100%">
+                                <stop offset="0%" stop-color="#38bdf8"/><stop offset="100%" stop-color="#6366f1"/>
+                            </linearGradient>
+                        </defs>
+                        <g fill="none" stroke="url(#g-ss-3)" stroke-linecap="round">
+                            <path d="M 20 50 Q 35 30, 50 50 T 80 50" stroke-width="3.5"/>
+                            <path d="M 25 62 Q 40 42, 55 62 T 85 62" stroke-width="2.5" opacity="0.7"/>
+                            <path d="M 15 38 Q 30 18, 45 38 T 75 38" stroke-width="2" opacity="0.4"/>
+                            <circle cx="50" cy="50" r="5" fill="url(#g-ss-3)" stroke="none"/>
+                        </g>
+                    </svg>
+                </div>
+                <div class="card-content">
+                    <div>
+                        <div class="tag-row"><span class="concept-tag tag-starsora">Starsora · 03</span></div>
+                        <h2 class="concept-title">Zen Compute / 禅意算力波纹</h2>
+                        <p class="concept-desc">融合日式庭院“枯山水”的流线砂纹与数字信号波形，在极简禅意中展现高并发数据流的井然有序。</p>
+                        <div class="features">
+                            <span class="feature-badge">枯山水美学</span>
+                            <span class="feature-badge">平滑波纹</span>
+                            <span class="feature-badge">理性秩序</span>
+                        </div>
+                    </div>
+                    <div class="btn-group">
+                        <button class="btn btn-primary" onclick="downloadSvg('ss-3', 'starsora-zen-compute.svg')">下载 SVG</button>
+                        <button class="btn btn-secondary" onclick="copySvg('ss-3')">复制代码</button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card" data-category="starsora">
+                <div class="logo-viewport">
+                    <svg id="ss-4" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+                        <defs>
+                            <linearGradient id="g-ss-4" x1="0%" y1="0%" x2="100%" y2="100%">
+                                <stop offset="0%" stop-color="#f59e0b"/><stop offset="100%" stop-color="#f43f5e"/>
+                            </linearGradient>
+                        </defs>
+                        <g fill="none" stroke="url(#g-ss-4)" stroke-linecap="round" stroke-linejoin="round">
+                            <polygon points="50,18 78,34 78,66 50,82 22,66 22,34" stroke-width="3"/>
+                            <polygon points="50,30 67,40 67,60 50,70 33,60 33,40" stroke-width="2" opacity="0.6"/>
+                            <line x1="50" y1="18" x2="50" y2="30" stroke-width="3"/>
+                            <line x1="50" y1="70" x2="50" y2="82" stroke-width="3"/>
+                            <circle cx="50" cy="50" r="5" fill="url(#g-ss-4)" stroke="none"/>
+                        </g>
+                    </svg>
+                </div>
+                <div class="card-content">
+                    <div>
+                        <div class="tag-row"><span class="concept-tag tag-starsora">Starsora · 04</span></div>
+                        <h2 class="concept-title">Kumiko Lattice / 组子细工科技网</h2>
+                        <p class="concept-desc">汲取日本传统木工“组子 (Kumiko)”精细几何格纹灵感，构建出严丝合缝的 AI 算力分发网络。</p>
+                        <div class="features">
+                            <span class="feature-badge">组子格纹</span>
+                            <span class="feature-badge">传统工艺演化</span>
+                            <span class="feature-badge">精密网格</span>
+                        </div>
+                    </div>
+                    <div class="btn-group">
+                        <button class="btn btn-primary" onclick="downloadSvg('ss-4', 'starsora-kumiko-lattice.svg')">下载 SVG</button>
+                        <button class="btn btn-secondary" onclick="copySvg('ss-4')">复制代码</button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card" data-category="starsora">
+                <div class="logo-viewport">
+                    <svg id="ss-5" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+                        <defs>
+                            <linearGradient id="g-ss-5" x1="0%" y1="0%" x2="100%" y2="100%">
+                                <stop offset="0%" stop-color="#10b981"/><stop offset="100%" stop-color="#3b82f6"/>
+                            </linearGradient>
+                        </defs>
+                        <g fill="none" stroke="url(#g-ss-5)" stroke-linecap="round" stroke-linejoin="round" stroke-width="3.5">
+                            <path d="M 25 75 Q 50 50, 75 25" />
+                            <path d="M 30 25 Q 50 50, 70 75" opacity="0.6" stroke-width="2.5"/>
+                            <circle cx="50" cy="50" r="6" fill="url(#g-ss-5)" stroke="none"/>
+                        </g>
+                    </svg>
+                </div>
+                <div class="card-content">
+                    <div>
+                        <div class="tag-row"><span class="concept-tag tag-starsora">Starsora · 05</span></div>
+                        <h2 class="concept-title">Katana Vector / 锋刃向量交汇</h2>
+                        <p class="concept-desc">以日本刀剑利落流畅的优美弧线为意象，象征 AI 算力分发的高效、精准与一触即发的爆发力。</p>
+                        <div class="features">
+                            <span class="feature-badge">锋刃意象</span>
+                            <span class="feature-badge">极致精准</span>
+                            <span class="feature-badge">动感向量</span>
+                        </div>
+                    </div>
+                    <div class="btn-group">
+                        <button class="btn btn-primary" onclick="downloadSvg('ss-5', 'starsora-katana-vector.svg')">下载 SVG</button>
+                        <button class="btn btn-secondary" onclick="copySvg('ss-5')">复制代码</button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card" data-category="starsora">
+                <div class="logo-viewport">
+                    <svg id="ss-6" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+                        <defs>
+                            <linearGradient id="g-ss-6" x1="0%" y1="0%" x2="100%" y2="100%">
+                                <stop offset="0%" stop-color="#a855f7"/><stop offset="100%" stop-color="#f43f5e"/>
+                            </linearGradient>
+                        </defs>
+                        <g fill="none" stroke="url(#g-ss-6)" stroke-linecap="round" stroke-linejoin="round" stroke-width="3.5">
+                            <path d="M 18 60 C 30 40, 45 40, 55 55 C 65 70, 80 70, 82 50" />
+                            <path d="M 18 45 C 30 25, 45 25, 55 40 C 65 55, 80 55, 82 35" opacity="0.6" stroke-width="2.5"/>
+                            <circle cx="50" cy="50" r="4" fill="url(#g-ss-6)" stroke="none"/>
+                        </g>
+                    </svg>
+                </div>
+                <div class="card-content">
+                    <div>
+                        <div class="tag-row"><span class="concept-tag tag-starsora">Starsora · 06</span></div>
+                        <h2 class="concept-title">Wave Matrix / 浮世绘算力浪潮</h2>
+                        <p class="concept-desc">将日本经典浮世绘几何海浪韵律转化为数字流体波纹，承载海量 AI 模型并发调度与澎湃算力。</p>
+                        <div class="features">
+                            <span class="feature-badge">日式浪潮</span>
+                            <span class="feature-badge">数字流体</span>
+                            <span class="feature-badge">澎湃算力</span>
+                        </div>
+                    </div>
+                    <div class="btn-group">
+                        <button class="btn btn-primary" onclick="downloadSvg('ss-6', 'starsora-wave-matrix.svg')">下载 SVG</button>
+                        <button class="btn btn-secondary" onclick="copySvg('ss-6')">复制代码</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 几何矩阵扩展变体 (12款) -->
+            <div class="card" data-category="matrix">
+                <div class="logo-viewport">
+                    <svg id="mx-1" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+                        <defs>
+                            <linearGradient id="g-mx-1" x1="0%" y1="0%" x2="100%" y2="100%">
+                                <stop offset="0%" stop-color="#14b8a6"/><stop offset="100%" stop-color="#6366f1"/>
+                            </linearGradient>
+                        </defs>
+                        <g fill="none" stroke="url(#g-mx-1)" stroke-linecap="round" stroke-width="3.2">
+                            <path d="M 20 35 C 50 20, 50 80, 80 65" />
+                            <path d="M 20 65 C 50 80, 50 20, 80 35" opacity="0.55"/>
+                            <rect x="44" y="44" width="12" height="12" rx="3.2" fill="url(#g-mx-1)" stroke="none"/>
+                        </g>
+                    </svg>
+                </div>
+                <div class="card-content">
+                    <div>
+                        <div class="tag-row"><span class="concept-tag tag-matrix">Matrix · 01</span></div>
+                        <h2 class="concept-title">Quantum Node / 量子节点交汇</h2>
+                        <p class="concept-desc">青紫渐变双弧曲线穿插圆角方形算力核心，构图紧凑均衡，适合作为应用图标与品牌主标。</p>
+                        <div class="features">
+                            <span class="feature-badge">青紫渐变</span>
+                            <span class="feature-badge">方形核心</span>
+                            <span class="feature-badge">App 图标友好</span>
+                        </div>
+                    </div>
+                    <div class="btn-group">
+                        <button class="btn btn-primary" onclick="downloadSvg('mx-1', 'matrix-quantum-node.svg')">下载 SVG</button>
+                        <button class="btn btn-secondary" onclick="copySvg('mx-1')">复制代码</button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card" data-category="matrix">
+                <div class="logo-viewport">
+                    <svg id="mx-2" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+                        <defs>
+                            <linearGradient id="g-mx-2" x1="0%" y1="0%" x2="100%" y2="100%">
+                                <stop offset="0%" stop-color="#38bdf8"/><stop offset="100%" stop-color="#6366f1"/>
+                            </linearGradient>
+                        </defs>
+                        <g fill="none" stroke="url(#g-mx-2)" stroke-linecap="round" stroke-linejoin="round" stroke-width="3.8">
+                            <path d="M 35 24 L 20 50 L 35 76" />
+                            <path d="M 65 24 L 80 50 L 65 76" />
+                            <line x1="42" y1="34" x2="58" y2="66" stroke-width="4.2"/>
+                        </g>
+                    </svg>
+                </div>
+                <div class="card-content">
+                    <div>
+                        <div class="tag-row"><span class="concept-tag tag-matrix">Matrix · 02</span></div>
+                        <h2 class="concept-title">Code Bracket / 电光代码网关</h2>
+                        <p class="concept-desc">高饱和电光蓝紫渐变代码括号，强化技术与 API 网关属性，视觉锐利且极具辨识度。</p>
+                        <div class="features">
+                            <span class="feature-badge">API 网关</span>
+                            <span class="feature-badge">电光蓝紫</span>
+                            <span class="feature-badge">极简线条</span>
+                        </div>
+                    </div>
+                    <div class="btn-group">
+                        <button class="btn btn-primary" onclick="downloadSvg('mx-2', 'matrix-code-bracket.svg')">下载 SVG</button>
+                        <button class="btn btn-secondary" onclick="copySvg('mx-2')">复制代码</button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card" data-category="matrix">
+                <div class="logo-viewport">
+                    <svg id="mx-3" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+                        <defs>
+                            <linearGradient id="g-mx-3" x1="0%" y1="0%" x2="100%" y2="100%">
+                                <stop offset="0%" stop-color="#38bdf8"/><stop offset="100%" stop-color="#818cf8"/>
+                            </linearGradient>
+                        </defs>
+                        <g>
+                            <path d="M 28 72 Q 50 72, 50 50 T 72 28" stroke="url(#g-mx-3)" stroke-width="3.2" fill="none" stroke-linecap="round"/>
+                            <path d="M 28 28 Q 50 28, 50 50 T 72 72" stroke="url(#g-mx-3)" stroke-width="2" fill="none" opacity="0.45" stroke-dasharray="2 2" stroke-linecap="round"/>
+                            <circle cx="28" cy="72" r="5.5" fill="url(#g-mx-3)"/>
+                            <circle cx="50" cy="50" r="7.5" fill="url(#g-mx-3)"/>
+                            <circle cx="72" cy="28" r="5.5" fill="url(#g-mx-3)"/>
+                            <circle cx="28" cy="28" r="3.5" fill="url(#g-mx-3)" opacity="0.65"/>
+                            <circle cx="72" cy="72" r="3.5" fill="url(#g-mx-3)" opacity="0.65"/>
+                        </g>
+                    </svg>
+                </div>
+                <div class="card-content">
+                    <div>
+                        <div class="tag-row"><span class="concept-tag tag-matrix">Matrix · 03</span></div>
+                        <h2 class="concept-title">Pulse Synapse / 脉冲突触连结</h2>
+                        <p class="concept-desc">主轴突触实线搭配微粒脉冲虚线辅轴，强化神经信号传递的动态视觉张力。</p>
+                        <div class="features">
+                            <span class="feature-badge">主辅双轴</span>
+                            <span class="feature-badge">脉冲信号</span>
+                            <span class="feature-badge">神经网络</span>
+                        </div>
+                    </div>
+                    <div class="btn-group">
+                        <button class="btn btn-primary" onclick="downloadSvg('mx-3', 'matrix-pulse-synapse.svg')">下载 SVG</button>
+                        <button class="btn btn-secondary" onclick="copySvg('mx-3')">复制代码</button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card" data-category="matrix">
+                <div class="logo-viewport">
+                    <svg id="mx-4" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+                        <defs>
+                            <linearGradient id="g-mx-4" x1="0%" y1="0%" x2="100%" y2="100%">
+                                <stop offset="0%" stop-color="#38bdf8"/><stop offset="100%" stop-color="#4f46e5"/>
+                            </linearGradient>
+                        </defs>
+                        <g fill="none" stroke="url(#g-mx-4)" stroke-linecap="round">
+                            <path d="M 20 50 Q 35 30, 50 50 T 80 50" stroke-width="3.8"/>
+                            <path d="M 25 62 Q 40 42, 55 62 T 85 62" stroke-width="2.6" opacity="0.75"/>
+                            <path d="M 15 38 Q 30 18, 45 38 T 75 38" stroke-width="2.2" opacity="0.45"/>
+                            <circle cx="50" cy="50" r="5.5" fill="url(#g-mx-4)" stroke="none"/>
+                        </g>
+                    </svg>
+                </div>
+                <div class="card-content">
+                    <div>
+                        <div class="tag-row"><span class="concept-tag tag-matrix">Matrix · 04</span></div>
+                        <h2 class="concept-title">Azure Ripple / 蔚蓝三叠算力波</h2>
+                        <p class="concept-desc">三层错落有致的蔚蓝正弦波纹环绕中心算力核心，体现多模型并行吞吐的秩序感。</p>
+                        <div class="features">
+                            <span class="feature-badge">三层波纹</span>
+                            <span class="feature-badge">蔚蓝科技</span>
+                            <span class="feature-badge">并行吞吐</span>
+                        </div>
+                    </div>
+                    <div class="btn-group">
+                        <button class="btn btn-primary" onclick="downloadSvg('mx-4', 'matrix-azure-ripple.svg')">下载 SVG</button>
+                        <button class="btn btn-secondary" onclick="copySvg('mx-4')">复制代码</button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card" data-category="matrix">
+                <div class="logo-viewport">
+                    <svg id="mx-5" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+                        <defs>
+                            <linearGradient id="g-mx-5" x1="0%" y1="0%" x2="100%" y2="100%">
+                                <stop offset="0%" stop-color="#d946ef"/><stop offset="100%" stop-color="#f43f5e"/>
+                            </linearGradient>
+                        </defs>
+                        <g fill="none" stroke="url(#g-mx-5)" stroke-linecap="round">
+                            <path d="M 18 56 Q 34 32, 50 56 T 82 56" stroke-width="4"/>
+                            <path d="M 18 42 Q 34 18, 50 42 T 82 42" stroke-width="2.5" opacity="0.5"/>
+                            <circle cx="50" cy="56" r="4.5" fill="url(#g-mx-5)" stroke="none"/>
+                        </g>
+                    </svg>
+                </div>
+                <div class="card-content">
+                    <div>
+                        <div class="tag-row"><span class="concept-tag tag-matrix">Matrix · 05</span></div>
+                        <h2 class="concept-title">Neon Wave / 霓虹双轨谐振</h2>
+                        <p class="concept-desc">品红至珊瑚粉渐变双轨曲线，主波承载核心节点，副波营造轻盈的谐振回响效果。</p>
+                        <div class="features">
+                            <span class="feature-badge">品红渐变</span>
+                            <span class="feature-badge">双轨谐振</span>
+                            <span class="feature-badge">高对比度</span>
+                        </div>
+                    </div>
+                    <div class="btn-group">
+                        <button class="btn btn-primary" onclick="downloadSvg('mx-5', 'matrix-neon-wave.svg')">下载 SVG</button>
+                        <button class="btn btn-secondary" onclick="copySvg('mx-5')">复制代码</button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card" data-category="matrix">
+                <div class="logo-viewport">
+                    <svg id="mx-6" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+                        <defs>
+                            <linearGradient id="g-mx-6" x1="0%" y1="100%" x2="100%" y2="0%">
+                                <stop offset="0%" stop-color="#06b6d4"/><stop offset="100%" stop-color="#38bdf8"/>
+                            </linearGradient>
+                            <linearGradient id="g-mx-6b" x1="0%" y1="0%" x2="100%" y2="100%">
+                                <stop offset="0%" stop-color="#10b981"/><stop offset="100%" stop-color="#3b82f6"/>
+                            </linearGradient>
+                        </defs>
+                        <g fill="none" stroke-linecap="round">
+                            <line x1="26" y1="24" x2="74" y2="76" stroke="url(#g-mx-6b)" stroke-width="2.6" opacity="0.75"/>
+                            <line x1="24" y1="76" x2="76" y2="24" stroke="url(#g-mx-6)" stroke-width="4"/>
+                            <circle cx="50" cy="50" r="6.5" fill="url(#g-mx-6)"/>
+                        </g>
+                    </svg>
+                </div>
+                <div class="card-content">
+                    <div>
+                        <div class="tag-row"><span class="concept-tag tag-matrix">Matrix · 06</span></div>
+                        <h2 class="concept-title">Cross Axis / 十字坐标枢纽</h2>
+                        <p class="concept-desc">一粗一细两条正交斜向射线精准交汇于圆点，展现极简几何张力与模型路由决策点。</p>
+                        <div class="features">
+                            <span class="feature-badge">正交射线</span>
+                            <span class="feature-badge">粗细对比</span>
+                            <span class="feature-badge">极简几何</span>
+                        </div>
+                    </div>
+                    <div class="btn-group">
+                        <button class="btn btn-primary" onclick="downloadSvg('mx-6', 'matrix-cross-axis.svg')">下载 SVG</button>
+                        <button class="btn btn-secondary" onclick="copySvg('mx-6')">复制代码</button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card" data-category="matrix">
+                <div class="logo-viewport">
+                    <svg id="mx-7" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+                        <defs>
+                            <linearGradient id="g-mx-7" x1="0%" y1="0%" x2="100%" y2="100%">
+                                <stop offset="0%" stop-color="#22d3ee"/><stop offset="100%" stop-color="#10b981"/>
+                            </linearGradient>
+                        </defs>
+                        <g fill="none" stroke="url(#g-mx-7)" stroke-linecap="round">
+                            <circle cx="50" cy="50" r="36" stroke-width="1.5" stroke-dasharray="3 4" opacity="0.55"/>
+                            <path d="M 20 50 Q 35 30, 50 50 T 80 50" stroke-width="3.5"/>
+                            <path d="M 25 62 Q 40 42, 55 62 T 85 62" stroke-width="2.4" opacity="0.7"/>
+                            <path d="M 15 38 Q 30 18, 45 38 T 75 38" stroke-width="2" opacity="0.4"/>
+                            <circle cx="50" cy="50" r="5" fill="url(#g-mx-7)" stroke="none"/>
+                        </g>
+                    </svg>
+                </div>
+                <div class="card-content">
+                    <div>
+                        <div class="tag-row"><span class="concept-tag tag-matrix">Matrix · 07</span></div>
+                        <h2 class="concept-title">Orbital Zen / 虚线星环枯山水</h2>
+                        <p class="concept-desc">在三叠流线波纹外围增设虚线轨道星环，赋予东方禅意波纹以现代天体运行与计算边界感。</p>
+                        <div class="features">
+                            <span class="feature-badge">虚线星环</span>
+                            <span class="feature-badge">翡翠青绿</span>
+                            <span class="feature-badge">徽章构图</span>
+                        </div>
+                    </div>
+                    <div class="btn-group">
+                        <button class="btn btn-primary" onclick="downloadSvg('mx-7', 'matrix-orbital-zen.svg')">下载 SVG</button>
+                        <button class="btn btn-secondary" onclick="copySvg('mx-7')">复制代码</button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card" data-category="matrix">
+                <div class="logo-viewport">
+                    <svg id="mx-8" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+                        <defs>
+                            <linearGradient id="g-mx-8" x1="0%" y1="0%" x2="100%" y2="100%">
+                                <stop offset="0%" stop-color="#f43f5e"/><stop offset="100%" stop-color="#a855f7"/>
+                            </linearGradient>
+                        </defs>
+                        <g fill="none" stroke="url(#g-mx-8)" stroke-linecap="round">
+                            <circle cx="50" cy="50" r="36" stroke-width="1.8" opacity="0.5"/>
+                            <path d="M 18 56 Q 34 32, 50 56 T 82 56" stroke-width="3.8"/>
+                            <path d="M 18 42 Q 34 18, 50 42 T 82 42" stroke-width="2.4" opacity="0.55"/>
+                            <circle cx="50" cy="56" r="4.5" fill="url(#g-mx-8)" stroke="none"/>
+                        </g>
+                    </svg>
+                </div>
+                <div class="card-content">
+                    <div>
+                        <div class="tag-row"><span class="concept-tag tag-matrix">Matrix · 08</span></div>
+                        <h2 class="concept-title">Sphere Crest / 紫晶球体波纹徽章</h2>
+                        <p class="concept-desc">实线外环完整包裹双轨算力波纹，形成天然的圆形徽章结构，适配头像、印章与硬件铭牌。</p>
+                        <div class="features">
+                            <span class="feature-badge">实线外环</span>
+                            <span class="feature-badge">紫晶渐变</span>
+                            <span class="feature-badge">头像适配</span>
+                        </div>
+                    </div>
+                    <div class="btn-group">
+                        <button class="btn btn-primary" onclick="downloadSvg('mx-8', 'matrix-sphere-crest.svg')">下载 SVG</button>
+                        <button class="btn btn-secondary" onclick="copySvg('mx-8')">复制代码</button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card" data-category="matrix">
+                <div class="logo-viewport">
+                    <svg id="mx-9" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+                        <defs>
+                            <linearGradient id="g-mx-9" x1="0%" y1="0%" x2="100%" y2="100%">
+                                <stop offset="0%" stop-color="#38bdf8"/><stop offset="100%" stop-color="#6366f1"/>
+                            </linearGradient>
+                        </defs>
+                        <g>
+                            <path d="M 28 72 Q 50 72, 50 50 T 72 28" stroke="url(#g-mx-9)" stroke-width="3.2" fill="none" stroke-linecap="round"/>
+                            <path d="M 28 28 Q 50 28, 50 50 T 72 72" stroke="url(#g-mx-9)" stroke-width="2.6" fill="none" opacity="0.65" stroke-linecap="round"/>
+                            <circle cx="28" cy="72" r="5.5" fill="url(#g-mx-9)"/>
+                            <circle cx="50" cy="50" r="7.5" fill="url(#g-mx-9)"/>
+                            <circle cx="72" cy="28" r="5.5" fill="url(#g-mx-9)"/>
+                            <circle cx="28" cy="28" r="4" fill="url(#g-mx-9)" opacity="0.75"/>
+                            <circle cx="72" cy="72" r="4" fill="url(#g-mx-9)" opacity="0.75"/>
+                        </g>
+                    </svg>
+                </div>
+                <div class="card-content">
+                    <div>
+                        <div class="tag-row"><span class="concept-tag tag-matrix">Matrix · 09</span></div>
+                        <h2 class="concept-title">Synapse Bold / 强化突触核心</h2>
+                        <p class="concept-desc">加粗节点与曲线描边比例的突触网络版本，在移动端小尺寸屏幕下依然保持清晰饱满的轮廓。</p>
+                        <div class="features">
+                            <span class="feature-badge">高可读性</span>
+                            <span class="feature-badge">强化节点</span>
+                            <span class="feature-badge">全尺寸适配</span>
+                        </div>
+                    </div>
+                    <div class="btn-group">
+                        <button class="btn btn-primary" onclick="downloadSvg('mx-9', 'matrix-synapse-bold.svg')">下载 SVG</button>
+                        <button class="btn btn-secondary" onclick="copySvg('mx-9')">复制代码</button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card" data-category="matrix">
+                <div class="logo-viewport">
+                    <svg id="mx-10" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+                        <defs>
+                            <linearGradient id="g-mx-10" x1="0%" y1="0%" x2="100%" y2="100%">
+                                <stop offset="0%" stop-color="#22d3ee"/><stop offset="100%" stop-color="#3b82f6"/>
+                            </linearGradient>
+                        </defs>
+                        <g fill="none" stroke="url(#g-mx-10)" stroke-linecap="round">
+                            <circle cx="50" cy="50" r="34" stroke-width="2" stroke-dasharray="4 4"/>
+                            <circle cx="50" cy="50" r="20" stroke-width="2.5"/>
+                            <circle cx="50" cy="50" r="7" fill="url(#g-mx-10)" stroke="none"/>
+                            <circle cx="50" cy="16" r="3.5" fill="url(#g-mx-10)" stroke="none"/>
+                            <circle cx="50" cy="84" r="3.5" fill="url(#g-mx-10)" stroke="none"/>
+                            <circle cx="16" cy="50" r="3.5" fill="url(#g-mx-10)" stroke="none"/>
+                            <circle cx="84" cy="50" r="3.5" fill="url(#g-mx-10)" stroke="none"/>
+                        </g>
+                    </svg>
+                </div>
+                <div class="card-content">
+                    <div>
+                        <div class="tag-row"><span class="concept-tag tag-matrix">Matrix · 10</span></div>
+                        <h2 class="concept-title">Constellation Hub / 星轨多节点中枢</h2>
+                        <p class="concept-desc">四向卫星节点锚定于外层虚线星轨，象征多区域大模型节点围绕统一调度中心协同运转。</p>
+                        <div class="features">
+                            <span class="feature-badge">星轨卫星</span>
+                            <span class="feature-badge">四向节点</span>
+                            <span class="feature-badge">集群调度</span>
+                        </div>
+                    </div>
+                    <div class="btn-group">
+                        <button class="btn btn-primary" onclick="downloadSvg('mx-10', 'matrix-constellation-hub.svg')">下载 SVG</button>
+                        <button class="btn btn-secondary" onclick="copySvg('mx-10')">复制代码</button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card" data-category="matrix">
+                <div class="logo-viewport">
+                    <svg id="mx-11" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+                        <defs>
+                            <linearGradient id="g-mx-11" x1="0%" y1="0%" x2="100%" y2="100%">
+                                <stop offset="0%" stop-color="#f59e0b"/><stop offset="100%" stop-color="#ef4444"/>
+                            </linearGradient>
+                        </defs>
+                        <g fill="none" stroke="url(#g-mx-11)" stroke-linecap="round" stroke-linejoin="round" stroke-width="3.6">
+                            <polygon points="36,24 64,24 72,44 28,44"/>
+                            <polygon points="24,52 76,52 86,76 14,76"/>
+                        </g>
+                    </svg>
+                </div>
+                <div class="card-content">
+                    <div>
+                        <div class="tag-row"><span class="concept-tag tag-matrix">Matrix · 11</span></div>
+                        <h2 class="concept-title">Compute Pyramid / 算力基座金字塔</h2>
+                        <p class="concept-desc">上下双层梯形算力架构，琥珀金至炽热红渐变，传递稳固的基础设施底座与强劲推理算力。</p>
+                        <div class="features">
+                            <span class="feature-badge">算力底座</span>
+                            <span class="feature-badge">琥珀炽红</span>
+                            <span class="feature-badge">稳固架构</span>
+                        </div>
+                    </div>
+                    <div class="btn-group">
+                        <button class="btn btn-primary" onclick="downloadSvg('mx-11', 'matrix-compute-pyramid.svg')">下载 SVG</button>
+                        <button class="btn btn-secondary" onclick="copySvg('mx-11')">复制代码</button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card" data-category="matrix">
+                <div class="logo-viewport">
+                    <svg id="mx-12" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+                        <defs>
+                            <linearGradient id="g-mx-12" x1="0%" y1="0%" x2="100%" y2="100%">
+                                <stop offset="0%" stop-color="#38bdf8"/><stop offset="100%" stop-color="#2563eb"/>
+                            </linearGradient>
+                        </defs>
+                        <g fill="none" stroke="url(#g-mx-12)" stroke-linecap="round" stroke-linejoin="round" stroke-width="3.8">
+                            <path d="M 22 35 L 50 65 L 78 35" />
+                            <path d="M 22 65 L 50 38 L 78 65" opacity="0.65"/>
+                        </g>
+                    </svg>
+                </div>
+                <div class="card-content">
+                    <div>
+                        <div class="tag-row"><span class="concept-tag tag-matrix">Matrix · 12</span></div>
+                        <h2 class="concept-title">Interlock Peak / 交错双峰矩阵</h2>
+                        <p class="concept-desc">上下双折线交错形成对称菱形中腔，兼具速度感与结构稳定性，适合企业级 SaaS 品牌升级。</p>
+                        <div class="features">
+                            <span class="feature-badge">交错折线</span>
+                            <span class="feature-badge">深海蔚蓝</span>
+                            <span class="feature-badge">企业级质感</span>
+                        </div>
+                    </div>
+                    <div class="btn-group">
+                        <button class="btn btn-primary" onclick="downloadSvg('mx-12', 'matrix-interlock-peak.svg')">下载 SVG</button>
+                        <button class="btn btn-secondary" onclick="copySvg('mx-12')">复制代码</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <footer>
+            <p>StarNexus &amp; Starweave &amp; Starvia Brand Identity System — 24 Unified Vector Concepts</p>
+        </footer>
+    </div>
+
+    <div id="toast">SVG 代码已复制到剪贴板</div>
+
+    <script>
+        function filterCards(category, btn) {
+            document.querySelectorAll('.tab-btn').forEach(el => el.classList.remove('active'));
+            btn.classList.add('active');
+
+            document.querySelectorAll('.card').forEach(card => {
+                if (category === 'all' || card.dataset.category === category) {
+                    card.classList.remove('hidden');
+                } else {
+                    card.classList.add('hidden');
+                }
+            });
+        }
+
+        function setPreviewBg(mode, btn) {
+            document.querySelectorAll('.bg-pill').forEach(el => el.classList.remove('active'));
+            btn.classList.add('active');
+
+            document.body.classList.remove('light-preview', 'pure-black-preview');
+            if (mode === 'light') {
+                document.body.classList.add('light-preview');
+            } else if (mode === 'pure-black') {
+                document.body.classList.add('pure-black-preview');
+            }
+        }
+
+        function showToast(msg) {
+            const toast = document.getElementById('toast');
+            toast.textContent = msg;
+            toast.classList.add('show');
+            setTimeout(() => toast.classList.remove('show'), 2200);
+        }
+
+        function downloadSvg(svgId, filename) {
+            const svgElement = document.getElementById(svgId);
+            const serializer = new XMLSerializer();
+            let source = serializer.serializeToString(svgElement);
+
+            if (!source.match(/^<svg[^>]+xmlns="http\:\/\/www\.w3\.org\/2000\/svg"/)) {
+                source = source.replace(/^<svg/, '<svg xmlns="http://www.w3.org/2000/svg"');
+            }
+            if (!source.match(/^<svg[^>]+xmlns:xlink/)) {
+                source = source.replace(/^<svg/, '<svg xmlns:xlink="http://www.w3.org/1999/xlink"');
+            }
+
+            source = '<?xml version="1.0" standalone="no"?>\r\n' + source;
+
+            const blob = new Blob([source], { type: "image/svg+xml;charset=utf-8" });
+            const url = URL.createObjectURL(blob);
+            const downloadLink = document.createElement("a");
+            downloadLink.href = url;
+            downloadLink.download = filename;
+            document.body.appendChild(downloadLink);
+            downloadLink.click();
+            document.body.removeChild(downloadLink);
+            URL.revokeObjectURL(url);
+            showToast(`已开始下载：${filename}`);
+        }
+
+        function copySvg(svgId) {
+            const svgElement = document.getElementById(svgId);
+            const serializer = new XMLSerializer();
+            const source = serializer.serializeToString(svgElement);
+
+            navigator.clipboard.writeText(source).then(() => {
+                showToast("SVG 代码已复制到剪贴板！");
+            }).catch(() => {
+                showToast("复制失败，请检查浏览器剪贴板权限");
+            });
+        }
+    </script>
+</body>
+</html>
